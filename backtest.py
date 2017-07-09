@@ -177,9 +177,7 @@ class ProgressBar:
         self.__update_amount(0)
 
     def animate(self, iteration):
-        print '\r',self,
-        sys.stdout.flush()
-        self.update_iteration(iteration + 1)
+        print('\r',self, sys.stdout.flush(), self.update_iteration(iteration + 1))
 
     def update_iteration(self, elapsed_iter):
         self.__update_amount((elapsed_iter / float(self.iterations)) * 100.0)

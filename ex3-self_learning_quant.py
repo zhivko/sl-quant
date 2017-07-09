@@ -12,7 +12,7 @@ from sklearn import metrics, preprocessing
 from talib.abstract import *
 from sklearn.externals import joblib
 
-import Quandl
+import quandl
 
 '''
 Name:        The Self Learning Quant, Example 3
@@ -30,7 +30,7 @@ MatplotLib
 scikit-learn
 TA-Lib, instructions at https://mrjbq7.github.io/ta-lib/install.html
 Keras, https://keras.io/
-Quandl, https://www.quandl.com/tools/python
+quandl, https://www.quandl.com/tools/python
 backtest.py from the TWP library. Download backtest.py and put in the same folder
 
 /plt create a subfolder in the same directory where plot files will be saved
@@ -40,10 +40,10 @@ backtest.py from the TWP library. Download backtest.py and put in the same folde
 #Load data
 def read_convert_data(symbol='XBTEUR'):
     if symbol == 'XBTEUR':
-        prices = Quandl.get("BCHARTS/KRAKENEUR")
+        prices = quandl.get("BCHARTS/KRAKENEUR")
         prices.to_pickle('data/XBTEUR_1day.pkl') # a /data folder must exist
     if symbol == 'EURUSD_1day':
-        #prices = Quandl.get("ECB/EURUSD")
+        #prices = quandl.get("ECB/EURUSD")
         prices = pd.read_csv('data/EURUSD_1day.csv',sep=",", skiprows=0, header=0, index_col=0, parse_dates=True, names=['ticker', 'date', 'time', 'open', 'low', 'high', 'close'])
         prices.to_pickle('data/EURUSD_1day.pkl')
     print(prices)
@@ -132,13 +132,13 @@ def get_reward(new_state, time_step, action, xdata, signal, terminal_state, eval
         #save a figure of the test set
         bt = twp.Backtest(pd.Series(data=[x for x in xdata], index=signal.index.values), signal, signalType='shares')
         reward = bt.pnl.iloc[-1]
-        plt.figure(figsize=(3,4))
+        plt.figure(figsize=(10,12))
         bt.plotTrades()
         plt.axvline(x=400, color='black', linestyle='--')
         plt.text(250, 400, 'training data')
         plt.text(450, 400, 'test data')
         plt.suptitle(str(epoch))
-        plt.savefig('plt/'+str(epoch)+'.png', bbox_inches='tight', pad_inches=1, dpi=72)
+        plt.savefig('plt/'+str(epoch)+'.png', bbox_inches='tight', pad_inches=1, dpi=300)
         plt.close('all')
     #print(time_step, terminal_state, eval, reward)
 
@@ -297,7 +297,7 @@ print(bt.data)
 unique, counts = np.unique(filter(lambda v: v==v, signal.values), return_counts=True)
 print(np.asarray((unique, counts)).T)
 
-plt.figure()
+plt.figure(figsize=(18, 12), dpi=400)
 plt.subplot(3,1,1)
 bt.plotTrades()
 plt.subplot(3,1,2)
@@ -305,7 +305,7 @@ bt.pnl.plot(style='x-')
 plt.subplot(3,1,3)
 plt.plot(learning_progress)
 
-plt.savefig('plt/summary'+'.png', bbox_inches='tight', pad_inches=1, dpi=72)
+plt.savefig('plt/summary'+'.png', bbox_inches='tight', pad_inches=1, dpi=300)
 #plt.show()
 
 
